@@ -1,18 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+    //project routes
+    Route::post('/project', [App\Http\Controllers\ProjectsController::class,'store'])->name('project.store');
+    Route::view('/project/create','projects.create' )->name('project.create');
+    Route::get('/project', [App\Http\Controllers\ProjectsController::class,'index'])->name('project.all');
+    Route::get('/project/{project}', [App\Http\Controllers\ProjectsController::class,'show'])->name('project.show');
+    
+    Route::get('/home',function(){ return redirect()->route('project.all');});
+    Route::get('/', function(){  return redirect()->route('project.all');})->name('home');
 });
