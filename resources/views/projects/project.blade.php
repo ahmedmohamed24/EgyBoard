@@ -16,21 +16,19 @@
         <div class="col-md-8">
             <div class="tasks-container">
                 <h3 class="text-muted">Tasks</h3>
-                <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
-                    <div class="card-body">
-                       {{ $project->description }} 
+                @forelse ($project->tasks as $task)
+                    <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
+                        <div class="card-body">
+                        {{ $task->body}} 
+                        </div>
                     </div>
-                </div>
-                <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
-                    <div class="card-body">
-                       {{ $project->description }} 
-                    </div>
-                </div>
-                <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
-                    <div class="card-body">
-                       {{ $project->description }} 
-                    </div>
-                </div>
+                @empty
+                    <p class="alert alert-warning my-3">no tasks found yet</p>    
+                @endforelse
+                <form action="{{ route('task.create',$project) }}" method="POST">
+                    @csrf
+                    <input type="text" class="form-control" name="body" placeholder="add new task ...">
+                </form>
                 <h4 class="text-muted mt-4 mb-3">General Notes</h4>
                 <textarea name="notes" cols="30" rows="3" class="form-control"> {{ $project->description }}</textarea>
 

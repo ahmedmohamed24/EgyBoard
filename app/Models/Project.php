@@ -28,4 +28,10 @@ class Project extends Model
     {
         return $this->belongsTo(\App\Models\User::class,'owner_id');
     }
+    public function tasks(){
+        return $this->hasMany(\App\Models\Task::class,'project_id');
+    }
+    public function addTask($body,$user=null){
+        $this->tasks()->create(['body'=>$body,'owner_id'=>$user??auth()->id()]);
+    }
 }

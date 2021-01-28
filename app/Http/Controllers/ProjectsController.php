@@ -21,9 +21,9 @@ class ProjectsController extends Controller
             'description'=>['required','string'],
         ]);
         //presist
-        Auth::user()->projects()->create($data);
+        $project=Auth::user()->projects()->create($data);
         //redirect
-        return redirect('/project');
+        return redirect($project->path());
     }
     public function show(Project $project)
     {
