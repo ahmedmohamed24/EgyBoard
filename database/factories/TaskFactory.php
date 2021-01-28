@@ -27,6 +27,7 @@ class TaskFactory extends Factory
         return [
             'body'=>$this->faker->sentence(),
             'owner_id'=>$user_id,
+            'status'=>1,
             'project_id'=>function() use ($user_id){
                 return Project::factory()->create(['owner_id'=>$user_id]);
             }

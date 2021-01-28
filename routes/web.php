@@ -13,6 +13,7 @@ Route::group(['middleware' => 'auth'], function () {
    
     //project tasks routes 
     Route::post('/project/{project}/task',[\App\Http\Controllers\TaskController::class,'store'])->name('task.create'); 
+    Route::patch('/project/{project}/task/{task}',[\App\Http\Controllers\TaskController::class,'update'])->name('task.update'); 
 
     Route::get('/home',function(){ return redirect()->route('project.all');});
     Route::get('/', function(){  return redirect()->route('project.all');})->name('home');

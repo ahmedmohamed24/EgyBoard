@@ -19,16 +19,34 @@
                 @forelse ($project->tasks as $task)
                     <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
                         <div class="card-body">
-                        {{ $task->body}} 
+                            <form action="{{ route('task.update',[$project,$task]) }}" method="POST">
+                                @method('patch')
+                                @csrf
+                                <div class="d-flex align-items-center pl-2">
+                                    <input type="text" class="form-control border-0" value="{{ $task->body}}" name="body" placeholder="add new task ...">
+                                    <input type="checkbox" onChange="this.form.submit()" class="form-check-input" @if ($task->status)
+                                        checked 
+                                    @endif  name="status" >
+                                    @if ($errors->any())
+                                       @foreach ($errors->all() as $item)
+                                            <p>{{ $item }}</p> 
+                                       @endforeach 
+                                    @endif
+                                </div>
+                            </form>
                         </div>
                     </div>
                 @empty
                     <p class="alert alert-warning my-3">no tasks found yet</p>    
                 @endforelse
-                <form action="{{ route('task.create',$project) }}" method="POST">
-                    @csrf
-                    <input type="text" class="form-control" name="body" placeholder="add new task ...">
-                </form>
+                <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
+                    <div class="card-body">
+                        <form action="{{ route('task.create',$project) }}" method="POST">
+                            @csrf
+                            <input type="text" class="form-control" name="body" placeholder="add new task ...">
+                        </form>
+                    </div>
+                </div>
                 <h4 class="text-muted mt-4 mb-3">General Notes</h4>
                 <textarea name="notes" cols="30" rows="3" class="form-control"> {{ $project->description }}</textarea>
 

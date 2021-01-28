@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Project;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,17 +26,14 @@ class ProjectsTest extends TestCase
     public function test_user_can_create_project()
     {
         $this->withoutExceptionHandling();
-        $this->actingAs(User::factory()->create());
-        $params=[
-            'title'=>$this->faker->sentence,
-            'description'=>$this->faker->sentence,
-        ];
+        $this->signUserIn();
+        $params=Project::factory()->raw();
         //when a post request got
-        $this->post('/project', $params)->assertRedirect('/project');
+        $this->post('/project', $params)->assertStatus(302);
         //test the data is set into DB
         $this->assertDatabaseHas('projects', $params);
         //test redirect to projects page to see this post
-        $this->get('/project')->assertSee($params['title']);
+        $this->get('/project')->assertSee(Str::limit($params['title'], 25, '...'));
     }
 
     /** @test */
