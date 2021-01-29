@@ -15,23 +15,45 @@ class ProjectsController extends Controller
     }
     public function store(Request $request)
     {
-        //validate
-        $data=$request->validate([
-            'title'=>['required','string','max:244'],
-            'description'=>['required','string'],
-        ]);
-        //presist
-        $project=Auth::user()->projects()->create($data);
-        //redirect
+        $project=Auth::user()->projects()->create($this->validateRequest($request));
         return redirect($project->path());
     }
     public function show(Project $project)
     {
-        //validate the user can see this project
-        if($project->user->id !== Auth::id())
-            abort(403);
-        // if((int)$project->owner_id !== Auth::id())
-        // $project=Project::findOrFail(request('project'));
+        $this->authorize('update',$project);
         return view('projects.project', compact('project'));
+    }
+    public function updateNotes(Project $project,Request $request)
+    {
+        $this->authorize('update',$project);
+        $request->validate([
+            'notes'=>'nullable|string'
+        ]);
+        $project->update([
+            'notes'=>$request->notes
+        ]);
+        //may return message of success
+        return back();
+    }
+    public function update(Request $request,Project $project)
+    {
+        $this->authorize('update',$project);
+        $project->update($this->validateRequest($request));
+        //may return a success message
+        return back();
+    
+    }
+    public function edit(Project $project)
+    {
+        $this->authorize('update',$project);
+        return view('projects.edit',compact('project'));
+    }
+    protected function validateRequest(Request $request)
+    {
+       return $request->validate([
+            'title'=>['required','string','max:244'],
+            'description'=>['required','string'],
+            'notes'=>['nullable','string'],
+        ]);
     }
 }

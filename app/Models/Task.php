@@ -14,4 +14,19 @@ class Task extends Model
      * @var array
      */
     protected $guarded = [];
+    /**
+     * The relationships that should be touched on save.
+     *
+     * @var array
+     */
+    protected $touches = ['project'];
+    public function path()
+    {
+        return "project/$this->project_id/task/$this->id";
+    }
+    public function project()
+    {
+        return  $this->belongsTo(\App\Models\Project::class,'project_id') ;
+    
+    }
 }

@@ -10,6 +10,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::view('/project/create','projects.create' )->name('project.create');
     Route::get('/project', [App\Http\Controllers\ProjectsController::class,'index'])->name('project.all');
     Route::get('/project/{project}', [App\Http\Controllers\ProjectsController::class,'show'])->name('project.show');
+    Route::get('/project/{project}/edit', [\App\Http\Controllers\ProjectsController::class,'edit'])->name('project.edit');
+    Route::patch('/project/{project}',[\App\Http\Controllers\ProjectsController::class,'update'])->name('project.update'); 
+    Route::patch('/project/{project}/notes',[\App\Http\Controllers\ProjectsController::class,'updateNotes'])->name('project.update.notes'); 
    
     //project tasks routes 
     Route::post('/project/{project}/task',[\App\Http\Controllers\TaskController::class,'store'])->name('task.create'); 

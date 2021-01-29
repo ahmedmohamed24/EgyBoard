@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function store(Project $project,Request $request){
+    public function store(Project $project,Request $request)
+    {
         $request->validate([
             'body'=>['required','string']
         ]);
-        if((int)$project->owner_id !== auth()->id())
-            return back()->withErrors('not auth');
+        //make sure only project owner can add task to it
+        $this->authorize('update',$project);
         $project->addTask($request->body);
         return redirect($project->path());
     } 
@@ -27,8 +28,7 @@ class TaskController extends Controller
             'body'=>['required','string'],
             'status'=>['in:on,null,0,1']
         ]);
-        if( (int)Auth::id() !== (int)$project->owner_id )
-            abort(404);
+        $this->authorize('update',$project);
         //logic
         try{
             $task->update([

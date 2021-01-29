@@ -10,12 +10,16 @@
                 <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($project->title, 15, '...') }}</li>
             </ol>
         </nav>
-        <button class="btn btn-info text-light">New Project</button>
     </header>
     <main class="row ">
         <div class="col-md-8">
             <div class="tasks-container">
                 <h3 class="text-muted">Tasks</h3>
+                @if ($errors->any())
+                    @foreach ($errors->all() as $item)
+                        <p class="alert alert-danger">{{ $item }}</p> 
+                    @endforeach 
+                @endif
                 @forelse ($project->tasks as $task)
                     <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
                         <div class="card-body">
@@ -24,15 +28,9 @@
                                 @csrf
                                 <div class="d-flex align-items-center pl-2">
                                     <input type="text" class="form-control border-0" value="{{ $task->body}}" name="body" placeholder="add new task ...">
-                                    <input type="checkbox" onChange="this.form.submit()" class="form-check-input" @if ($task->status)
-                                        checked 
-                                    @endif  name="status" >
-                                    @if ($errors->any())
-                                       @foreach ($errors->all() as $item)
-                                            <p>{{ $item }}</p> 
-                                       @endforeach 
-                                    @endif
+                                    <input type="checkbox" onChange="this.form.submit()" class="form-check-input" @if ($task->status) checked @endif  name="status" >
                                 </div>
+                              
                             </form>
                         </div>
                     </div>
@@ -48,9 +46,12 @@
                     </div>
                 </div>
                 <h4 class="text-muted mt-4 mb-3">General Notes</h4>
-                <textarea name="notes" cols="30" rows="3" class="form-control"> {{ $project->description }}</textarea>
-
-
+                <form method="POST" action="{{ route('project.update.notes',$project) }}">
+                    @csrf
+                    @method('patch')
+                    <textarea name="notes" cols="30" rows="3" class="form-control" placeholder="@if ($project->notes == null) Add notes about your tasks @endif" >{{ $project->notes }}</textarea>
+                    <button class="btn btn-info text-light mt-2 px-3" type="submit">save</button>
+                </form>
             </div>
         </div>
         <div class="col-md-4">

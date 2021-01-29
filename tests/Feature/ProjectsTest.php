@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Task;
 use App\Models\User;
 use App\Models\Project;
 use Illuminate\Support\Str;
@@ -25,15 +26,26 @@ class ProjectsTest extends TestCase
     /**@test */
     public function test_user_can_create_project()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
         $this->signUserIn();
         $params=Project::factory()->raw();
         //when a post request got
-        $this->post('/project', $params)->assertStatus(302);
+        $this->post('/project', $params)->assertStatus(302)->assertSessionHasNoErrors();
         //test the data is set into DB
         $this->assertDatabaseHas('projects', $params);
         //test redirect to projects page to see this post
         $this->get('/project')->assertSee(Str::limit($params['title'], 25, '...'));
+    }
+
+    /**@test*/
+    public function test_user_can_add_notes_to_project()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $notes=['notes'=>'hello this is a test note'];
+        $this->patch($project->path().'/notes',$notes)->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('projects',$notes);
     }
 
     /** @test */
@@ -70,6 +82,30 @@ class ProjectsTest extends TestCase
         $this->actingAs($user);
         $project=Project::factory()->create(['owner_id'=>$user->id]);
         $this->get($project->path())->assertStatus(200);
+    }
+
+    /**@test*/
+    public function test_project_is_updated_when_task_is_updated()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $task=$project->addTask("test");
+        //begin update section
+        $newTask=Task::factory()->raw(['project_id'=>$project->id]);
+        $this->patch($project->path().'/task/'."$task->id",$newTask);
+        $this->assertEquals($project->updated_at,$task->updated_at);
+    }
+
+    /**@test*/
+    public function test_user_can_update_project()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();   
+        $newData=['title'=>'new title','description'=>'lorem inpsum','notes'=>'hello this is a test note'];
+        $this->patch($project->path(),$newData)->assertSessionHasNoErrors()->assertRedirect();
+        $this->assertDatabaseHas('projects',$newData);
     }
 
 }
