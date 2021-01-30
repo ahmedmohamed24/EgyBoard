@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Project extends Model
 {
@@ -33,5 +34,22 @@ class Project extends Model
     }
     public function addTask($body,$user=null){
         return $this->tasks()->create(['body'=>$body,'owner_id'=>$user??auth()->id(),'status'=>0]);
+    }
+    public function activity()
+    {
+        return $this->morphOne(Activity::class,'activityable');
+    }
+    /**
+     *  recodrd activity when something is done 
+     *
+     * @return void
+     */
+    public function recordActivity(string $descriptoin)
+    {
+        Activity::create([
+            'activityable_type'=>'Project',
+            'activityable_id'=>$this->id,
+            'description'=>$descriptoin,
+        ]);  
     }
 }

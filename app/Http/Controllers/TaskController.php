@@ -23,12 +23,12 @@ class TaskController extends Controller
 
     public function update(Project $project , Task $task, Request $request)
     {
+        $this->authorize('update',$project);
         //validate 
         $request->validate([
             'body'=>['required','string'],
             'status'=>['in:on,null,0,1']
         ]);
-        $this->authorize('update',$project);
         //logic
         try{
             $task->update([

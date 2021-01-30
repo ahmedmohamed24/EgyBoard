@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectsController extends Controller
 {
+    /**
+     *  return all projects 
+     * @return \Illuminate\Contracts\View\View 
+     */
     public function index()
     {
         $projects=Auth::user()->projects()->paginate(9);
