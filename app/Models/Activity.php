@@ -18,4 +18,8 @@ class Activity extends Model
     {
         $this->morphTo();
     }
+    public function owner()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'owner');
+    }
 }

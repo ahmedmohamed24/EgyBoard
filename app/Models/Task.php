@@ -32,18 +32,13 @@ class Task extends Model
     }
     public function activity()
     {
-        return $this->morphOne(Activity::class,'activityable');
+        return $this->morphMany(Activity::class,'activityable');
     }
-    /**
-    * Undocumented function
-    *
-    * @param string $descriptoin
-    * @return void
-    */
     public function recordActivity(string $descriptoin)
     {
         Activity::create([
             'activityable_type'=>'Task',
+            'owner'=>auth()->id(),
             'activityable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  

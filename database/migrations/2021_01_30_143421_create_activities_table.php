@@ -17,7 +17,8 @@ class CreateActivitiesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('activityable_id');
             $table->string('activityable_type');
-            // $table->foreign('project')->references('id')->on('projects')->onDelete('cascade');
+            $table->unsignedBigInteger('owner');
+            $table->foreign('owner')->references('id')->on('users')->onDelete('cascade');
             $table->string('description');
             $table->timestamps();
         });

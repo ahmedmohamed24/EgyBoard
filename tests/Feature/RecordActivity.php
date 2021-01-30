@@ -7,7 +7,7 @@ use App\Models\Project;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RecordingActivity extends TestCase
+class RecordActivity extends TestCase
 {
     use WithFaker,RefreshDatabase;
 
@@ -89,5 +89,5 @@ class RecordingActivity extends TestCase
         ]);
         $this->assertDatabaseHas('activities',['description'=>'task marked as in completed']);
     }
-}
 
+}

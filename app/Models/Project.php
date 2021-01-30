@@ -29,15 +29,17 @@ class Project extends Model
     {
         return $this->belongsTo(\App\Models\User::class,'owner_id');
     }
-    public function tasks(){
-        return $this->hasMany(\App\Models\Task::class,'project_id');
+    public function tasks()
+    {
+        return $this->hasMany(\App\Models\Task::class,'project_id')->latest('updated_at');
     }
-    public function addTask($body,$user=null){
+    public function addTask($body,$user=null)
+    {
         return $this->tasks()->create(['body'=>$body,'owner_id'=>$user??auth()->id(),'status'=>0]);
     }
     public function activity()
     {
-        return $this->morphOne(Activity::class,'activityable');
+        return $this->morphMany(Activity::class,'activityable');
     }
     /**
      *  recodrd activity when something is done 
@@ -48,6 +50,7 @@ class Project extends Model
     {
         Activity::create([
             'activityable_type'=>'Project',
+            'owner'=>auth()->id(),
             'activityable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  

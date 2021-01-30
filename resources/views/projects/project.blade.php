@@ -61,7 +61,11 @@
                     <p class="text-muted">
                         {{ $project->description }}
                     </p>
+                    <a href="{{ route('project.edit',$project) }}" class="btn btn-primary text-white">Edit</a>
                 </div> 
+            </div>
+            <div class="activity-container">
+                @include('projects._activities')
             </div>
         </div>
     </main>
