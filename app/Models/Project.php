@@ -40,7 +40,7 @@ class Project extends Model
     }
     public function activity()
     {
-        return $this->morphMany(Activity::class,'activityable');
+        return $this->morphMany(Activity::class,'activitable');
     }
     /**
      *  recodrd activity when something is done 
@@ -57,10 +57,10 @@ class Project extends Model
             $user=User::factory()->create();
             $id=$user->id;
         } 
-        Activity::create([
-            'activityable_type'=>'Project',
+        $this->activity()->create([
+            'activitable_type'=>'Project',
             'owner'=>$id,
-            'activityable_id'=>$this->id,
+            'activitable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  
     }

@@ -36,7 +36,7 @@ class Task extends Model
     }
     public function activity()
     {
-        return $this->morphMany(Activity::class,'activityable');
+        return $this->morphMany(Activity::class,'activitable');
     }
     public function recordActivity(string $descriptoin)
     {
@@ -47,10 +47,10 @@ class Task extends Model
             $user=User::factory()->create();
             $id=$user->id;
         }
-        Activity::create([
-            'activityable_type'=>'Task',
+        $this->activity()->create([
+            'activitable_type'=>'Task',
             'owner'=>$id,
-            'activityable_id'=>$this->id,
+            'activitable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  
     }
