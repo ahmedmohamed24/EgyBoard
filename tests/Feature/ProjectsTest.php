@@ -45,6 +45,7 @@ class ProjectsTest extends TestCase
         $project=Project::factory()->create();
         $notes=['notes'=>'hello this is a test note'];
         $this->patch($project->path().'/notes',$notes)->assertRedirect()->assertSessionHasNoErrors();
+        // $project->update(['notes'=>'hello this is a test note']);
         $this->assertDatabaseHas('projects',$notes);
     }
 

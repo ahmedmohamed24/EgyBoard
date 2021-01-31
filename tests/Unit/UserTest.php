@@ -24,4 +24,5 @@ class UserTest extends TestCase
         $this->actingAs(User::factory()->create());
         $this->get('project/create')->assertStatus(200);
     }
+
 }

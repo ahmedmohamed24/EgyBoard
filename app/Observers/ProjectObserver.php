@@ -17,7 +17,16 @@ class ProjectObserver
     {
         $project->recordActivity('new project created');
     }
-
+    /**
+     * just before data is updating take an instance of them 
+     *
+     * @param Project $project
+     * @return void
+     */
+    public function updating(Project $project)
+    {
+        $project->old=$project->getOriginal();
+    }
     /**
      * Handle the Project "updated" event.
      *
@@ -26,7 +35,17 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        $project->recordActivity('project updated');
+        $data=array_diff($project->getChanges(),$project->old);
+        foreach($data as $key => $value){
+            $after[$key]=$project->getChanges()[$key];
+            $before[$key]=$project->old[$key];
+        }
+
+        unset($after['created_at']);
+        unset($after['updated_at']);
+        unset($before['updated_at']);
+        unset($before['created_at']);
+        $project->recordActivity('project updated',['before'=>$before,'after'=>$after]);
     }
 
     /**

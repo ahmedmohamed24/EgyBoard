@@ -18,6 +18,7 @@ class Project extends Model
      */
     protected $guarded = [];
 
+    public $old;
     /**
      * gets the path of a project may be on slug or id or anything else
      * @return string
@@ -47,7 +48,7 @@ class Project extends Model
      *
      * @return void
      */
-    public function recordActivity(string $descriptoin)
+    public function recordActivity(string $descriptoin,array $data=null)
     {
         $id=null;
         if(auth()->check())
@@ -60,6 +61,7 @@ class Project extends Model
         $this->activity()->create([
             'activitable_type'=>'Project',
             'owner'=>$id,
+            'data'=> $data,
             'activitable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  

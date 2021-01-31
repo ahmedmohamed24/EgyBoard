@@ -24,7 +24,15 @@ class Task extends Model
      * @var array
      */
     protected $touches = ['getProject'];
-
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'data' => 'array',
+    ];
+    public $old;
     public function path()
     {
         return "project/$this->project/task/$this->id";
@@ -38,7 +46,7 @@ class Task extends Model
     {
         return $this->morphMany(Activity::class,'activitable');
     }
-    public function recordActivity(string $descriptoin)
+    public function recordActivity(string $descriptoin,array $data=null)
     {
         $id=null;
         if(auth()->check())
@@ -50,6 +58,7 @@ class Task extends Model
         $this->activity()->create([
             'activitable_type'=>'Task',
             'owner'=>$id,
+            'data'=>$data,
             'activitable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  

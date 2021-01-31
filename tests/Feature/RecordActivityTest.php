@@ -90,5 +90,41 @@ class RecordActivityTest extends TestCase
         $this->assertDatabaseHas('activities',['description'=>'task marked as in completed']);
     }
 
+    /**@test*/
+    public function test_activity_before_and_after_create_create()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $oldTitle=$project->title;
+        $oldDesc=$project->description;
+        $newTitle='new title';
+        $newDesc='new desc';
+        $project->update(['title'=>$newTitle,'description'=>$newDesc]);
+        $data=[
+            'before'=>['title'=>$oldTitle,'description'=>$oldDesc],
+            'after'=>['title'=>$newTitle,'description'=>$newDesc]
+        ];
+        $data=json_encode($data);
+        $this->assertDatabaseHas('activities',['data'=>$data]);
+    
+    }
+
+    /**@test */
+    public function test_activity_before_and_after_task_create()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $project->addTask('new task');
+        $project->tasks()->first()->update(['body'=>'edited task']);
+        $data=[
+            'before'=>['body'=>'new task'],
+            'after'=>['body'=>'edited task']
+        ];
+        $data=json_encode($data);
+        $this->assertDatabaseHas('activities',['data'=>$data]);
+    
+    }
 }
 
