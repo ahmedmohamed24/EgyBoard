@@ -19,6 +19,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/project/{project}/task',[\App\Http\Controllers\TaskController::class,'store'])->name('task.create'); 
     Route::patch('/project/{project}/task/{task}',[\App\Http\Controllers\TaskController::class,'update'])->name('task.update'); 
 
+    Route::get('/activity',[\App\Http\Controllers\ActivityController::class,'index'])->name('activity.index'); 
+    Route::delete('/activity/{activity}',[\App\Http\Controllers\ActivityController::class,'destroy'])->name('activity.delete'); 
+
     Route::get('/home',function(){ return redirect()->route('project.all');});
     Route::get('/', function(){  return redirect()->route('project.all');})->name('home');
 });

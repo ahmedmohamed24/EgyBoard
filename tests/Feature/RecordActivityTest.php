@@ -7,7 +7,7 @@ use App\Models\Project;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RecordActivity extends TestCase
+class RecordActivityTest extends TestCase
 {
     use WithFaker,RefreshDatabase;
 
@@ -91,3 +91,4 @@ class RecordActivity extends TestCase
     }
 
 }
+
