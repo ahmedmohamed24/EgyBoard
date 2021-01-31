@@ -26,10 +26,10 @@ class TaskFactory extends Factory
         $user_id=auth()->id()??User::factory()->create();
         return [
             'body'=>$this->faker->sentence(),
-            'owner_id'=>$user_id,
+            'owner'=>$user_id,
             'status'=>1,
-            'project_id'=>function() use ($user_id){
-                return Project::factory()->create(['owner_id'=>$user_id]);
+            'project'=>function() use ($user_id){
+                return Project::factory()->create(['owner'=>$user_id]);
             }
         ];
     }

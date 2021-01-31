@@ -26,7 +26,7 @@ class ProjectsTest extends TestCase
     /**@test */
     public function test_user_can_create_project()
     {
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $this->signUserIn();
         $params=Project::factory()->raw();
         //when a post request got
@@ -80,7 +80,7 @@ class ProjectsTest extends TestCase
         // $this->withoutExceptionHandling();
         $user=User::factory()->create();
         $this->actingAs($user);
-        $project=Project::factory()->create(['owner_id'=>$user->id]);
+        $project=Project::factory()->create(['owner'=>$user->id]);
         $this->get($project->path())->assertStatus(200);
     }
 
@@ -92,7 +92,7 @@ class ProjectsTest extends TestCase
         $project=Project::factory()->create();
         $task=$project->addTask("test");
         //begin update section
-        $newTask=Task::factory()->raw(['project_id'=>$project->id]);
+        $newTask=Task::factory()->raw(['project'=>$project->id]);
         $this->patch($project->path().'/task/'."$task->id",$newTask);
         $this->assertEquals($project->updated_at,$task->updated_at);
     }

@@ -44,10 +44,10 @@ class User extends Authenticatable
     ];
     public function projects()
     {
-        return $this->hasMany(Project::class,'owner_id')->orderBy('updated_at','desc');
+        return $this->hasMany(Project::class,'owner')->orderBy('updated_at','desc');
     }
     public function tasks(){
-        return $this->hasManyThrough(Task::class,Project::class,'owner_id','project_id','id','id');
+        return $this->hasManyThrough(Task::class,Project::class,'owner','project','id','id');
     }
     public function activities()
     {

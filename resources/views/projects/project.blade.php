@@ -21,15 +21,21 @@
                     @endforeach 
                 @endif
                 @forelse ($project->tasks as $task)
-                    <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary">
-                        <div class="card-body">
+                    <div class="card shadow border-right-0 border-top-0 border-bottom-0 mb-2 border-primary ">
+                        <div class="card-body ">
                             <form action="{{ route('task.update',[$project,$task]) }}" method="POST">
                                 @method('patch')
                                 @csrf
-                                <div class="d-flex align-items-center pl-2">
-                                    <input type="text" class="form-control border-0" value="{{ $task->body}}" name="body" placeholder="add new task ...">
+                                @if ($task->status) 
+                                    <del>
+                                @endif
+                                <div class="d-flex align-items-center pl-2 ">
+                                    <input type="text" class="form-control border-0 " value="{{ $task->body}}" name="body" placeholder="add new task ...">
                                     <input type="checkbox" onChange="this.form.submit()" class="form-check-input" @if ($task->status) checked @endif  name="status" >
                                 </div>
+                                @if ($task->status) 
+                                    </del> 
+                                @endif
                               
                             </form>
                         </div>

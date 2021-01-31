@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,15 +28,15 @@ class Project extends Model
     }
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class,'owner_id');
+        return $this->belongsTo(User::class,'owner');
     }
     public function tasks()
     {
-        return $this->hasMany(\App\Models\Task::class,'project_id')->latest('updated_at');
+        return $this->hasMany(\App\Models\Task::class,'project')->latest('updated_at');
     }
     public function addTask($body,$user=null)
     {
-        return $this->tasks()->create(['body'=>$body,'owner_id'=>$user??auth()->id(),'status'=>0]);
+        return $this->tasks()->create(['body'=>$body,'owner'=>$user??auth()->id(),'status'=>0]);
     }
     public function activity()
     {
@@ -48,9 +49,17 @@ class Project extends Model
      */
     public function recordActivity(string $descriptoin)
     {
+        $id=null;
+        if(auth()->check())
+            $id=auth()->id();
+        else{
+            //only will hit this in testing 
+            $user=User::factory()->create();
+            $id=$user->id;
+        } 
         Activity::create([
             'activityable_type'=>'Project',
-            'owner'=>auth()->id(),
+            'owner'=>$id,
             'activityable_id'=>$this->id,
             'description'=>$descriptoin,
         ]);  

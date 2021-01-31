@@ -21,7 +21,7 @@ class ProjectTaskTest extends TestCase
         $project=auth()->user()->projects()->create(
             Project::factory()->raw()
         );
-        $task=Task::factory()->raw(['owner_id'=>auth()->id()]);
+        $task=Task::factory()->raw(['owner'=>auth()->id()]);
         $this->post($project->path().'/task',$task)->assertRedirect();
         $this->get($project->path())->assertSee($task);
     }
@@ -34,8 +34,9 @@ class ProjectTaskTest extends TestCase
         $project=auth()->user()->projects()->create(
             Project::factory()->raw()
         );
-        $task=Task::factory()->raw(['body'=>'','project_id'=>$project->id]);
+        $task=Task::factory()->raw(['body'=>'','project'=>$project->id]);
         $this->post($project->path().'/task',$task)->assertSessionHasErrors('body');
+        // $this->post($project->path().'/task',$task)->assertSessionHasNoErrors();
     }
 
     /**@test*/
@@ -68,7 +69,7 @@ class ProjectTaskTest extends TestCase
         $project=Project::factory()->create();
         $task=$project->addTask("test");
         //begin update section
-        $newTask=Task::factory()->raw(['project_id'=>$project->id]);
+        $newTask=Task::factory()->raw(['project'=>$project->id]);
         $this->patch($project->path().'/task/'."$task->id",$newTask)->assertStatus(302)->assertSessionHasNoErrors();
         $this->assertDatabaseHas('tasks',$newTask);
     }
@@ -104,7 +105,7 @@ class ProjectTaskTest extends TestCase
         $this->signUserIn();
         $project=Project::factory()->create();
         $task=$project->addTask("test");
-        $newTask=Task::factory()->raw(['body'=>'hello','status'=>1,'project_id'=>$project->id]);
+        $newTask=Task::factory()->raw(['body'=>'hello','status'=>1,'project'=>$project->id]);
         $this->patch($task->path(),$newTask)->assertSessionHasNoErrors()->assertStatus(302);
         $this->assertDatabaseHas('tasks',$newTask);
     } 
@@ -122,9 +123,10 @@ class ProjectTaskTest extends TestCase
     public function test_every_task_must_have_project()
     {
         $this->withoutExceptionHandling();
-        // $task=Task::factory()->create(['project_id'=>null]);
+        $this->signUserIn();
+        // $task=Task::factory()->create(['project'=>null]);
         $task=Task::factory()->create();
-        $this->assertInstanceOf(Project::class,$task->project);
+        $this->assertInstanceOf(Project::class,$task->getProject);
     }
 
 }

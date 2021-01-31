@@ -16,9 +16,9 @@ class Activity extends Model
     protected $guarded = [];
     public function activityable()
     {
-        $this->morphTo();
+        return $this->morphTo();
     }
-    public function owner()
+    public function getOwner()
     {
         return $this->belongsTo(\App\Models\User::class, 'owner');
     }
