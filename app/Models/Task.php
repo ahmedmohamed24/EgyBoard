@@ -46,14 +46,14 @@ class Task extends Model
     {
         return $this->morphMany(Activity::class,'activitable');
     }
-    public function recordActivity(string $descriptoin,int $owner,array $data=null)
-    {
-        $this->activity()->create([
-            'activitable_type'=>'Task',
-            'owner'=>$owner,
-            'data'=>$data,
-            'activitable_id'=>$this->id,
-            'description'=>$descriptoin,
-        ]);  
-    }
+    // public function recordActivity(string $descriptoin,int $owner,array $data=null)
+    // {
+    //     $this->activity()->create([
+    //         'activitable_type'=>'Task',
+    //         'owner'=>$owner,
+    //         'data'=>$data,
+    //         'activitable_id'=>$this->id,
+    //         'description'=>$descriptoin,
+    //     ]);  
+    // }
 }

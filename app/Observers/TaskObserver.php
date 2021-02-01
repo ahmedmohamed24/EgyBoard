@@ -8,6 +8,7 @@ use App\Traits\RecordActivity;
 class TaskObserver
 {
     use RecordActivity;
+
     /**
      * Handle the Task "created" event.
      *
@@ -16,7 +17,7 @@ class TaskObserver
      */
     public function created(Task $task)
     {
-        $task->recordActivity("new task created",$this->getOwner());
+        $this->activityCreate($task,null,"new task created");
     }
     /**
      * before updating cache virsion to use in log
@@ -38,20 +39,20 @@ class TaskObserver
     public function updated(Task $task)
     {
         //this id only for testing with factory but in live user couldn't get here unless he is auth
-        if(array_key_exists('status',$task->getChanges())){
+        if(array_key_exists('status',$task->getChanges()))
+        {
             //no need for recording data here Only status is changed (request is sent per every change)
-            $owner=$this->getOwner(); 
             if(array_values($task->getChanges())[0])
-                $task->recordActivity("task completed",$owner);
+                $this->activityCreate($task,null,"task completed");
             else
-                $task->recordActivity("task marked as in completed",$owner);
+                $this->activityCreate($task,null,"task marked as in completed");
         }
         else{
             $data=$this->getData($task);
-            $task->recordActivity("task updated",$data['owner'],['before'=>$data['before'],'after'=>$data['after']]);
+            $this->activityCreate($task,['before'=>$data['before'],'after'=>$data['after']],'project updated');
         }
     }
-
+    
     /**
      * Handle the Task "deleted" event.
      *

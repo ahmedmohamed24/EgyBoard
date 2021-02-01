@@ -15,7 +15,6 @@ trait RecordActivity{
         }
     }
     public function getData(Model $model):array{
-        $data['owner']=$this->getOwner();
         $info=array_diff($model->getChanges(),$model->old);
         foreach($info as $key => $value){
             $after[$key]=$model->getChanges()[$key];
@@ -28,5 +27,15 @@ trait RecordActivity{
         $data['after']=$after;
         $data['before']=$before;
         return $data;
+    }
+    public function activityCreate($model,$data,$description)
+    {
+            $model->activity()->create([
+                'activitable_type'=>'Task',
+                'owner'=>$this->getOwner(),
+                'data'=>$data,
+                'activitable_id'=>$model->id,
+                'description'=>$description,
+            ]);
     }
 }

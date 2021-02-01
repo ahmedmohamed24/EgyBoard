@@ -16,7 +16,7 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        $project->recordActivity('new project created',$this->getOwner());
+        $this->activityCreate($project,null,'new project created');
     }
     /**
      * just before data is updating take an instance of them 
@@ -37,8 +37,7 @@ class ProjectObserver
     public function updated(Project $project)
     {
         $data=$this->getData($project); 
-        $project->recordActivity('project updated',$data['owner'],['before'=>$data['before'],'after'=>$data['after']]);
-
+        $this->activityCreate($project,['before'=>$data['before'],'after'=>$data['after']],'new project created');
     }
 
     /**

@@ -48,14 +48,14 @@ class Project extends Model
      *
      * @return void
      */
-    public function recordActivity(string $descriptoin,int $owner,array $data=null)
-    {
-        $this->activity()->create([
-            'activitable_type'=>'Project',
-            'owner'=>$owner,
-            'data'=> $data,
-            'activitable_id'=>$this->id,
-            'description'=>$descriptoin,
-        ]);  
-    }
+    // public function recordActivity(string $descriptoin,int $owner,array $data=null)
+    // {
+    //     $this->activity()->create([
+    //         'activitable_type'=>'Project',
+    //         'owner'=>$owner,
+    //         'data'=> $data,
+    //         'activitable_id'=>$this->id,
+    //         'description'=>$descriptoin,
+    //     ]);  
+    // }
 }
