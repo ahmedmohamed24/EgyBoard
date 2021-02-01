@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Feature;
 
 use Tests\TestCase;
@@ -20,7 +19,7 @@ class ProjectsTest extends TestCase
     {
         // $this->actingAs(User::factory()->create()); //to fail
         $project=Project::factory()->raw();
-        $this->post('/project',$project)->assertRedirect('login');
+        $this->post('/project', $project)->assertRedirect('login');
     }
 
     /**@test */
@@ -44,9 +43,9 @@ class ProjectsTest extends TestCase
         $this->signUserIn();
         $project=Project::factory()->create();
         $notes=['notes'=>'hello this is a test note'];
-        $this->patch($project->path().'/notes',$notes)->assertRedirect()->assertSessionHasNoErrors();
+        $this->patch($project->path().'/notes', $notes)->assertRedirect()->assertSessionHasNoErrors();
         // $project->update(['notes'=>'hello this is a test note']);
-        $this->assertDatabaseHas('projects',$notes);
+        $this->assertDatabaseHas('projects', $notes);
     }
 
     /** @test */
@@ -54,6 +53,7 @@ class ProjectsTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
         $params=Project::factory()->raw(['title'=>'']);
+     
         $this->post('/project', $params)->assertSessionHasErrors('title');
     }
 
@@ -66,12 +66,13 @@ class ProjectsTest extends TestCase
     }
 
     /**@test*/
-    public function test_user_cannot_view_other_projects(){
+    public function test_user_cannot_view_other_projects()
+    {
         $user1=User::factory()->create();
         $user2=User::factory()->create();
-        $this->actingAs($user1); 
+        $this->actingAs($user1);
         $project=Project::factory()->create();
-        $this->actingAs($user2); 
+        $this->actingAs($user2);
         $this->get($project->path())->assertStatus(403);
     }
 
@@ -94,8 +95,8 @@ class ProjectsTest extends TestCase
         $task=$project->addTask("test");
         //begin update section
         $newTask=Task::factory()->raw(['project'=>$project->id]);
-        $this->patch($project->path().'/task/'."$task->id",$newTask);
-        $this->assertEquals($project->updated_at,$task->updated_at);
+        $this->patch($project->path().'/task/'."$task->id", $newTask);
+        $this->assertEquals($project->updated_at, $task->updated_at);
     }
 
     /**@test*/
@@ -103,10 +104,9 @@ class ProjectsTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->signUserIn();
-        $project=Project::factory()->create();   
+        $project=Project::factory()->create();
         $newData=['title'=>'new title','description'=>'lorem inpsum','notes'=>'hello this is a test note'];
-        $this->patch($project->path(),$newData)->assertSessionHasNoErrors()->assertRedirect();
-        $this->assertDatabaseHas('projects',$newData);
+        $this->patch($project->path(), $newData)->assertSessionHasNoErrors()->assertRedirect();
+        $this->assertDatabaseHas('projects', $newData);
     }
-
 }

@@ -46,18 +46,11 @@ class Task extends Model
     {
         return $this->morphMany(Activity::class,'activitable');
     }
-    public function recordActivity(string $descriptoin,array $data=null)
+    public function recordActivity(string $descriptoin,int $owner,array $data=null)
     {
-        $id=null;
-        if(auth()->check())
-            $id=auth()->id();
-        else{
-            $user=User::factory()->create();
-            $id=$user->id;
-        }
         $this->activity()->create([
             'activitable_type'=>'Task',
-            'owner'=>$id,
+            'owner'=>$owner,
             'data'=>$data,
             'activitable_id'=>$this->id,
             'description'=>$descriptoin,

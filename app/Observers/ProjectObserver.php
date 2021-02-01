@@ -3,10 +3,11 @@
 namespace App\Observers;
 
 use App\Models\Project;
-use App\Models\Activity;
+use App\Traits\RecordActivity;
 
 class ProjectObserver
 {
+    use RecordActivity;
     /**
      * Handle the Project "created" event.
      *
@@ -15,7 +16,7 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        $project->recordActivity('new project created');
+        $project->recordActivity('new project created',$this->getOwner());
     }
     /**
      * just before data is updating take an instance of them 
@@ -35,17 +36,9 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        $data=array_diff($project->getChanges(),$project->old);
-        foreach($data as $key => $value){
-            $after[$key]=$project->getChanges()[$key];
-            $before[$key]=$project->old[$key];
-        }
+        $data=$this->getData($project); 
+        $project->recordActivity('project updated',$data['owner'],['before'=>$data['before'],'after'=>$data['after']]);
 
-        unset($after['created_at']);
-        unset($after['updated_at']);
-        unset($before['updated_at']);
-        unset($before['created_at']);
-        $project->recordActivity('project updated',['before'=>$before,'after'=>$after]);
     }
 
     /**

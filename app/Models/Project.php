@@ -48,19 +48,11 @@ class Project extends Model
      *
      * @return void
      */
-    public function recordActivity(string $descriptoin,array $data=null)
+    public function recordActivity(string $descriptoin,int $owner,array $data=null)
     {
-        $id=null;
-        if(auth()->check())
-            $id=auth()->id();
-        else{
-            //only will hit this in testing 
-            $user=User::factory()->create();
-            $id=$user->id;
-        } 
         $this->activity()->create([
             'activitable_type'=>'Project',
-            'owner'=>$id,
+            'owner'=>$owner,
             'data'=> $data,
             'activitable_id'=>$this->id,
             'description'=>$descriptoin,

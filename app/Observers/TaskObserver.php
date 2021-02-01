@@ -3,11 +3,11 @@
 namespace App\Observers;
 
 use App\Models\Task;
-use App\Models\Activity;
+use App\Traits\RecordActivity;
 
 class TaskObserver
 {
-    
+    use RecordActivity;
     /**
      * Handle the Task "created" event.
      *
@@ -16,7 +16,7 @@ class TaskObserver
      */
     public function created(Task $task)
     {
-        $task->recordActivity("new task created");
+        $task->recordActivity("new task created",$this->getOwner());
     }
     /**
      * before updating cache virsion to use in log
@@ -37,27 +37,19 @@ class TaskObserver
      */
     public function updated(Task $task)
     {
+        //this id only for testing with factory but in live user couldn't get here unless he is auth
         if(array_key_exists('status',$task->getChanges())){
-            //no need for recording data here 
+            //no need for recording data here Only status is changed (request is sent per every change)
+            $owner=$this->getOwner(); 
             if(array_values($task->getChanges())[0])
-                $task->recordActivity("task completed");
+                $task->recordActivity("task completed",$owner);
             else
-                $task->recordActivity("task marked as in completed");
+                $task->recordActivity("task marked as in completed",$owner);
         }
         else{
-            $data=array_diff($task->getChanges(),$task->old);
-            foreach($data as $key => $value){
-                $before[$key]=$task->old[$key];
-                $after[$key]=$task->getChanges()[$key];
-            }
-            unset($after['created_at']);
-            unset($after['updated_at']);
-            unset($before['updated_at']);
-            unset($before['created_at']);
-            $task->recordActivity("task updated",['before'=>$before,'after'=>$after]);
-
+            $data=$this->getData($task);
+            $task->recordActivity("task updated",$data['owner'],['before'=>$data['before'],'after'=>$data['after']]);
         }
-        
     }
 
     /**
