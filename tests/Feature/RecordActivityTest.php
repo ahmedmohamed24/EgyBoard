@@ -127,4 +127,3 @@ class RecordActivityTest extends TestCase
     
     }
 }
-

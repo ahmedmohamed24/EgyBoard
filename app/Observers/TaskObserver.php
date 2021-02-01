@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Task;
-use App\Traits\RecordActivity;
+use App\Providers\RecordActivity;
 
 class TaskObserver
 {
@@ -17,7 +17,7 @@ class TaskObserver
      */
     public function created(Task $task)
     {
-        $this->activityCreate($task,null,"new task created");
+        $this->activityCreate($task,false,"new task created");
     }
     /**
      * before updating cache virsion to use in log
@@ -27,7 +27,7 @@ class TaskObserver
      */
     public function updating(Task $task)
     {
-        $task->old=$task->getOriginal();
+        $task->oldAttributes=$task->getOriginal();
     }
 
     /**
@@ -43,13 +43,12 @@ class TaskObserver
         {
             //no need for recording data here Only status is changed (request is sent per every change)
             if(array_values($task->getChanges())[0])
-                $this->activityCreate($task,null,"task completed");
+                $this->activityCreate($task,false,"task completed");
             else
-                $this->activityCreate($task,null,"task marked as in completed");
+                $this->activityCreate($task,false,"task marked as in completed");
         }
         else{
-            $data=$this->getData($task);
-            $this->activityCreate($task,['before'=>$data['before'],'after'=>$data['after']],'project updated');
+            $this->activityCreate($task,true,'project updated');
         }
     }
     

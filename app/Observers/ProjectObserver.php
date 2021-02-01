@@ -3,11 +3,12 @@
 namespace App\Observers;
 
 use App\Models\Project;
-use App\Traits\RecordActivity;
+use App\Providers\RecordActivity;
 
 class ProjectObserver
 {
     use RecordActivity;
+
     /**
      * Handle the Project "created" event.
      *
@@ -16,8 +17,9 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        $this->activityCreate($project,null,'new project created');
+        $this->activityCreate($project,false,'new project created');
     }
+
     /**
      * just before data is updating take an instance of them 
      *
@@ -26,8 +28,9 @@ class ProjectObserver
      */
     public function updating(Project $project)
     {
-        $project->old=$project->getOriginal();
+        $project->oldAttributes=$project->getOriginal();
     }
+
     /**
      * Handle the Project "updated" event.
      *
@@ -36,8 +39,7 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        $data=$this->getData($project); 
-        $this->activityCreate($project,['before'=>$data['before'],'after'=>$data['after']],'new project created');
+        $this->activityCreate($project,true,'new project created');
     }
 
     /**

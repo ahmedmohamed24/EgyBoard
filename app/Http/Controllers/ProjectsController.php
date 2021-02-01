@@ -24,7 +24,7 @@ class ProjectsController extends Controller
     }
     public function show(Project $project)
     {
-        $this->authorize('update',$project);
+        $this->authorize('show',$project);
         return view('projects.project', compact('project'));
     }
     public function updateNotes(Project $project,Request $request)
@@ -59,5 +59,11 @@ class ProjectsController extends Controller
             'description'=>['required','string'],
             'notes'=>['nullable','string'],
         ]);
+    }
+    public function destroy(Project $project)
+    {
+        $this->authorize('destroy',$project);
+        $project->delete();
+        return redirect('/project');
     }
 }

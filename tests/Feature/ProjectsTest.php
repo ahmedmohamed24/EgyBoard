@@ -77,7 +77,7 @@ class ProjectsTest extends TestCase
     }
 
     /**@test*/
-    public function test_user_can_view_project()
+    public function test_user_can_view()
     {
         // $this->withoutExceptionHandling();
         $user=User::factory()->create();
@@ -87,7 +87,7 @@ class ProjectsTest extends TestCase
     }
 
     /**@test*/
-    public function test_project_is_updated_when_task_is_updated()
+    public function test_is_updated_when_task_is_updated()
     {
         $this->withoutExceptionHandling();
         $this->signUserIn();
@@ -100,7 +100,7 @@ class ProjectsTest extends TestCase
     }
 
     /**@test*/
-    public function test_user_can_update_project()
+    public function test_user_can_update()
     {
         $this->withoutExceptionHandling();
         $this->signUserIn();
@@ -108,5 +108,26 @@ class ProjectsTest extends TestCase
         $newData=['title'=>'new title','description'=>'lorem inpsum','notes'=>'hello this is a test note'];
         $this->patch($project->path(), $newData)->assertSessionHasNoErrors()->assertRedirect();
         $this->assertDatabaseHas('projects', $newData);
+    }
+
+    /**@test*/
+    public function test_user_can_delete()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $this->assertDatabaseHas('projects',$project->only(['title','description']));
+        $this->delete("/project/$project->id",$project->toArray())->assertRedirect('/project');
+        $this->assertDatabaseMissing('projects',$project->only(['title','description']));
+    }
+    /**@test*/
+    public function test_user_can_not_delete_others_projects()
+    {
+        // $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project=Project::factory()->create();
+        $this->signUserIn();
+        $this->delete("/project/$project->id",$project->toArray())->assertStatus(403);
+        $this->assertDatabaseHas('projects',$project->only(['title','description']));
     }
 }

@@ -32,28 +32,37 @@ class Task extends Model
     protected $casts = [
         'data' => 'array',
     ];
-    public $old;
+    /**
+     * old attributes that is used to log system
+     */    
+    public iterable $oldAttributes;
+
+    /**
+     * get the path of the task
+     *
+     * @return string 
+     */
     public function path()
     {
         return "project/$this->project/task/$this->id";
     }
+    /**
+     * get the parent project of a given task
+     * one project has many tasks
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function getProject()
     {
-        return  $this->belongsTo(\App\Models\Project::class,'project') ;
+        return $this->belongsTo(\App\Models\Project::class,'project') ;
     
     }
+    /**
+     * polymorphic relation between model and activity
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function activity()
     {
         return $this->morphMany(Activity::class,'activitable');
     }
-    // public function recordActivity(string $descriptoin,int $owner,array $data=null)
-    // {
-    //     $this->activity()->create([
-    //         'activitable_type'=>'Task',
-    //         'owner'=>$owner,
-    //         'data'=>$data,
-    //         'activitable_id'=>$this->id,
-    //         'description'=>$descriptoin,
-    //     ]);  
-    // }
 }
