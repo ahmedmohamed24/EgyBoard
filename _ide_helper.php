@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.24.0.
+ * Generated for Laravel 8.26.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -198,6 +198,18 @@
                         return $instance->langPath();
         }
                     /**
+         * Set the language file directory.
+         *
+         * @param string $path
+         * @return \Illuminate\Foundation\Application 
+         * @static 
+         */ 
+        public static function useLangPath($path)
+        {
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        return $instance->useLangPath($path);
+        }
+                    /**
          * Get the path to the public / web directory.
          *
          * @return string 
@@ -313,7 +325,7 @@
                         return $instance->environment(...$environments);
         }
                     /**
-         * Determine if application is in local environment.
+         * Determine if the application is in the local environment.
          *
          * @return bool 
          * @static 
@@ -324,7 +336,7 @@
                         return $instance->isLocal();
         }
                     /**
-         * Determine if application is in production environment.
+         * Determine if the application is in the production environment.
          *
          * @return bool 
          * @static 
@@ -846,7 +858,7 @@
                         $instance->setFallbackLocale($fallbackLocale);
         }
                     /**
-         * Determine if application locale is the given locale.
+         * Determine if the application locale is the given locale.
          *
          * @param string $locale
          * @return bool 
@@ -2039,7 +2051,7 @@
                         return $instance->setRequest($request);
         }
                     /**
-         * Determine if current user is authenticated. If not, throw an exception.
+         * Determine if the current user is authenticated. If not, throw an exception.
          *
          * @return \App\Models\User 
          * @throws \Illuminate\Auth\AuthenticationException
@@ -6438,7 +6450,7 @@
                         $instance->assertSent($callback);
         }
                     /**
-         * Assert that the given request were sent in the given order.
+         * Assert that the given request was sent in the given order.
          *
          * @param array $callbacks
          * @return void 
@@ -7335,7 +7347,7 @@
                     /**
          * Send a new message using a view.
          *
-         * @param string|array $view
+         * @param \Illuminate\Contracts\Mail\Mailable|string|array $view
          * @param array $data
          * @param \Closure|string|null $callback
          * @return void 
@@ -8566,7 +8578,7 @@
                         return $instance->routeIs(...$patterns);
         }
                     /**
-         * Determine if the current request URL and query string matches a pattern.
+         * Determine if the current request URL and query string match a pattern.
          *
          * @param mixed $patterns
          * @return bool 
@@ -8589,7 +8601,7 @@
                         return $instance->ajax();
         }
                     /**
-         * Determine if the request is the result of an PJAX call.
+         * Determine if the request is the result of a PJAX call.
          *
          * @return bool 
          * @static 
@@ -8600,7 +8612,7 @@
                         return $instance->pjax();
         }
                     /**
-         * Determine if the request is the result of an prefetch call.
+         * Determine if the request is the result of a prefetch call.
          *
          * @return bool 
          * @static 
@@ -11528,6 +11540,47 @@
                         /** @var \Illuminate\Routing\Router $instance */
                         return $instance->macroCall($method, $parameters);
         }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::auth()
+         * @param mixed $options
+         * @static 
+         */ 
+        public static function auth($options = [])
+        {
+                        return \Illuminate\Routing\Router::auth($options);
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::resetPassword()
+         * @static 
+         */ 
+        public static function resetPassword()
+        {
+                        return \Illuminate\Routing\Router::resetPassword();
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::confirmPassword()
+         * @static 
+         */ 
+        public static function confirmPassword()
+        {
+                        return \Illuminate\Routing\Router::confirmPassword();
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::emailVerification()
+         * @static 
+         */ 
+        public static function emailVerification()
+        {
+                        return \Illuminate\Routing\Router::emailVerification();
+        }
          
     }
             /**
@@ -11536,6 +11589,30 @@
      * @see \Illuminate\Database\Schema\Builder
      */ 
         class Schema {
+                    /**
+         * Create a database in the schema.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function createDatabase($name)
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->createDatabase($name);
+        }
+                    /**
+         * Drop a database from the schema if the database exists.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function dropDatabaseIfExists($name)
+        {
+                        /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+                        return $instance->dropDatabaseIfExists($name);
+        }
                     /**
          * Determine if the given table exists.
          *
@@ -14315,7 +14392,7 @@
                         return \Illuminate\View\Factory::parentPlaceholder($section);
         }
                     /**
-         * Check if section exists.
+         * Check if the section exists.
          *
          * @param string $name
          * @return bool 
@@ -14841,6 +14918,59 @@
         public static function hasValidRelativeSignature()
         {
                         return \Illuminate\Http\Request::hasValidRelativeSignature();
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Routing { 
+            /**
+     * 
+     *
+     * @mixin \Illuminate\Routing\RouteRegistrar
+     */ 
+        class Router {
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::auth()
+         * @param mixed $options
+         * @static 
+         */ 
+        public static function auth($options = [])
+        {
+                        return \Illuminate\Routing\Router::auth($options);
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::resetPassword()
+         * @static 
+         */ 
+        public static function resetPassword()
+        {
+                        return \Illuminate\Routing\Router::resetPassword();
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::confirmPassword()
+         * @static 
+         */ 
+        public static function confirmPassword()
+        {
+                        return \Illuminate\Routing\Router::confirmPassword();
+        }
+                    /**
+         * 
+         *
+         * @see \Laravel\Ui\AuthRouteMethods::emailVerification()
+         * @static 
+         */ 
+        public static function emailVerification()
+        {
+                        return \Illuminate\Routing\Router::emailVerification();
         }
          
     }
@@ -16198,7 +16328,7 @@ namespace  {
                 /**
              * Add a subquery join clause to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator
@@ -16250,7 +16380,7 @@ namespace  {
                 /**
              * Add a subquery left join to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator
@@ -16299,7 +16429,7 @@ namespace  {
                 /**
              * Add a subquery right join to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $query
              * @param string $as
              * @param \Closure|string $first
              * @param string|null $operator

@@ -2,45 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\Task;
 use App\Models\Project;
+use App\Models\Task;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function store(Project $project,Request $request)
+    /**
+     * stores the task to a project.
+     */
+    public function store(Project $project, Request $request)
     {
         $request->validate([
-            'body'=>['required','string']
+            'body' => ['required', 'string'],
         ]);
         //make sure only project owner can add task to it
-        $this->authorize('update',$project);
+        $this->authorize('update', $project);
         $project->addTask($request->body);
-        return redirect($project->path());
-    } 
 
-    public function update(Project $project , Task $task, Request $request)
+        return redirect($project->path());
+    }
+
+    /**
+     * update the task.
+     */
+    public function update(Project $project, Task $task, Request $request)
     {
-        $this->authorize('update',$project);
-        //validate 
+        $this->authorize('update', $project);
+        //validate
         $request->validate([
-            'body'=>['required','string'],
-            'status'=>['in:on,null,0,1']
+            'body' => ['required', 'string'],
+            'status' => ['in:on,null,0,1'],
         ]);
         //logic
-        try{
+        try {
             $task->update([
-                'body'=>$request->body,
-                'status'=>$request->status?1:0
+                'body' => $request->body,
+                'status' => $request->status ? 1 : 0,
             ]);
             //redirect
-            return back()->with('msg','successfully update');
-        }
-        catch(Exception $e){
+            return back()->with('msg', 'successfully update');
+        } catch (Exception $e) {
             return back()->withErrors($e->getMessage());
         }
-
     }
 }

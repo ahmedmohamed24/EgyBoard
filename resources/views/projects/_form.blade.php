@@ -1,9 +1,4 @@
     @csrf
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <p class="alert alet-danger my-1">{{ $error }}</p>
-        @endforeach 
-    @endif
     <div class="form-group">
         <label for="title">Title</label>
         <input type="text" name="title" id="title" value="{{ $project->title }}" class="form-control" placeholder="Project title">
@@ -25,8 +20,10 @@
             <p class="alert alert-danger py-2 text-center">{{ $message }}</p>
         @enderror
     </div>
-    <div class="form-group">
-        <button class="btn btn-primary" type="submit">{{ $buttonText }}</button>
-        <a class="btn btn-secondary text-white" href="{{ route('project.all') }}">Cancel</a>
+    {{-- end of modal body section --}}
+</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
     </div>
 </form>
