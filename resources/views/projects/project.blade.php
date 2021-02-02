@@ -71,11 +71,8 @@
                     <p class="text-muted">
                         {{ $project->description }}
                     </p>
-                    {{-- edit project modal --}}
-                    {{-- <a href="{{ route('project.edit',$project) }}" class="btn btn-primary text-white">Edit</a> --}}
-                    <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Launch demo modal
+                        Edit
                     </button>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"

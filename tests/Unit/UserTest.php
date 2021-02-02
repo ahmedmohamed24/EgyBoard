@@ -2,20 +2,38 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
+use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Collection;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
+use Tests\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class UserTest extends TestCase
 {
-    use RefreshDatabase,WithFaker;
-    /**@test*/
-    public function test_user_can_has_projects(){
+    use RefreshDatabase;
+    use WithFaker;
+
+    // @test
+    public function testUserCanHasProjects()
+    {
         $this->withoutExceptionHandling();
-        $user=User::factory()->create();
-        $this->assertInstanceOf(Collection::class,$user->projects);
+        $user = User::factory()->create();
+        $this->assertInstanceOf(Collection::class, $user->projects);
     }
 
+    // @test
+    public function testProjectCanInviteOthers()
+    {
+        $this->withoutExceptionHandling();
+        $this->signUserIn();
+        $project = Project::factory()->create();
+        $otherUser = User::factory()->create();
+        $project->invite($otherUser);
+        $this->assertTrue($project->members->contains($otherUser));
+    }
 }
