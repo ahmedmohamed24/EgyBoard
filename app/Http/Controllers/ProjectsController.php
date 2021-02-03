@@ -17,7 +17,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Auth::user()->projects()->paginate(9);
+        $projects = Auth::user()->availableProjects()->paginate(9);
 
         return view('projects.all', ['projects' => $projects]);
     }

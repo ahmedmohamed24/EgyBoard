@@ -3,17 +3,22 @@
     {{ Str::limit($project->title, 15, '...') }}
 @endsection
 @section('content')
-    <header class="d-flex justify-content-between align-items-center py-2">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-white">
-                <li class="breadcrumb-item"><a href="{{ route('project.all') }}">my projects</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($project->title, 15, '...') }}</li>
-            </ol>
-        </nav>
-    </header>
+
     <main class="row ">
         <div class="col-md-8">
             <div class="tasks-container">
+                <header class="d-flex justify-content-between align-items-center py-2">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-white">
+                            <li class="breadcrumb-item"><a href="{{ route('project.all') }}">my projects</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{ Str::limit($project->title, 15, '...') }}</li>
+                        </ol>
+                    </nav>
+                    @foreach ($project->members as $member)
+                        <img src="" alt=""> 
+                    @endforeach 
+                </header>
                 <h3 class="text-muted">Tasks</h3>
                 @if ($errors->any())
                     @foreach ($errors->all() as $item)
@@ -71,11 +76,16 @@
                     <p class="text-muted">
                         {{ $project->description }}
                     </p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+
+                    <button type="button" class="btn " data-toggle="modal" data-target="#editModal">
+                        <img src="{{ asset('images/edit.svg') }}" alt="edit icon">
                     </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inviteModal">
+                        Invite Users
+                    </button>
+
+                    {{-- start edit project --}}
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -92,14 +102,47 @@
                                     <form method="POST" action="{{ route('project.update', $project) }}">
                                         @method('PATCH')
                                         @include('projects._form')
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {{-- end edit project --}}
+
+                    {{-- start invite users to project --}}
+                    <div class="modal fade" id="inviteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-info" id="exampleModalLabel">Invite users and start
+                                        collaborating</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ route('project.invite', $project) }}" method="POST">
+                                    <div class="modal-body">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="invitee" class="text-secondary">Email of the Invitee</label>
+                                            <input type="text" name="email" id="invitee" class="form-control"
+                                                placeholder="person@example.com">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Invite</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- end invite users to project --}}
+
+                </div>
+                <div class="activity-container">
+                    @include('projects._activities')
                 </div>
             </div>
-            <div class="activity-container">
-                @include('projects._activities')
-            </div>
-        </div>
     </main>
 @endsection

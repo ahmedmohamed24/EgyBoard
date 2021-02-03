@@ -12,13 +12,11 @@ class ProjectPolicies
 
     public function show(User $user, Project $project)
     {
-        // return $project->user->id == Auth::id();
         return $user->is($project->user) or $project->members->contains($user);
     }
 
     public function update(User $user, Project $project)
     {
-        // return $project->user->id == Auth::id();
         return $user->is($project->user);
     }
 
@@ -29,6 +27,11 @@ class ProjectPolicies
     }
 
     public function destroy(User $user, Project $project)
+    {
+        return $user->is($project->user);
+    }
+
+    public function invite(User $user, Project $project)
     {
         return $user->is($project->user);
     }

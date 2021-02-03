@@ -88,4 +88,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Activity::class, 'owner')->orderBy('updated_at', 'desc');
     }
+
+    public function invitedProjects()
+    {
+        return $this->belongsToMany(Project::class, 'project_members');
+    }
+
+    public function availableProjects()
+    {
+        return Project::where('owner', $this->id)->orWhereHas('members', function ($query) {
+            $query->where('user_id', $this->id);
+        });
+    }
 }
