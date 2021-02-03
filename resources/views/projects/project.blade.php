@@ -15,9 +15,14 @@
                                 {{ Str::limit($project->title, 15, '...') }}</li>
                         </ol>
                     </nav>
-                    @foreach ($project->members as $member)
-                        <img src="" alt=""> 
-                    @endforeach 
+                    <div class="flex">
+                        <span class="text-secondary">Members: </span>
+                        @forelse ($project->members->except(auth()->user()->id)->take(10) as $member)
+                            <img src="{{ getAvatarUrl($project->email) }}" class="rounded" style="width: 25px;height:25px" title="{{ $member->email }}" alt="{{ $member->email }}'s avatar" />
+                        @empty
+                            <span class="alert-secondary py-1 px-2"> No members invited yet</span>
+                        @endforelse
+                    </div>
                 </header>
                 <h3 class="text-muted">Tasks</h3>
                 @if ($errors->any())
