@@ -20,11 +20,6 @@ class TaskPolicy
         return $user->is($task->getProject->user);
     }
 
-    public function create(User $user, Task $task)
-    {
-        return $user->is($task->getProject->user);
-    }
-
     public function destroy(User $user, Task $task)
     {
         return $user->is($task->getProject->user);

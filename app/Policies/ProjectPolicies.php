@@ -35,4 +35,9 @@ class ProjectPolicies
     {
         return $user->is($project->user);
     }
+
+    public function addTask(User $user, Project $project)
+    {
+        return $user->is($project->user) or $project->members->contains($user->id);
+    }
 }

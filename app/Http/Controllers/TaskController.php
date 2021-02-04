@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,8 @@ class TaskController extends Controller
     public function store(Project $project, Request $request)
     {
         //make sure only project owner can add task to it
-        $this->authorize('create', $project);
+        // $this->authorize('addTask', $project);
+        Gate::authorize('addTask', $project);
 
         $request->validate([
             'body' => ['required', 'string'],
