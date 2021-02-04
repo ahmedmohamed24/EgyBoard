@@ -4,7 +4,8 @@
             <img src="{{ asset('images/logo.svg') }}" alt="EgyBoard logo" style="width: 30px; height:30px;">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -23,7 +24,7 @@
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                     @endif
-                    
+
                     @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -31,7 +32,8 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}
                         </a>
 
@@ -39,9 +41,8 @@
                             <a class="dropdown-item" href="{{ route('activity.index') }}">
                                 Activities
                             </a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
 
@@ -49,6 +50,10 @@
                                 @csrf
                             </form>
                         </div>
+
+                    </li>
+                    <li class=" ml-2 flex justify-content-center align-items-center"onclick="openNav()"title="Open activities panel">
+                           <img   src="{{ asset('images/arrow.svg') }}" style="width:25px;height:25px" class="img-fluid" alt="arrow icon">
                     </li>
                 @endguest
             </ul>

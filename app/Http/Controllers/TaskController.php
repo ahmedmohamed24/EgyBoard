@@ -14,11 +14,12 @@ class TaskController extends Controller
      */
     public function store(Project $project, Request $request)
     {
+        //make sure only project owner can add task to it
+        $this->authorize('create', $project);
+
         $request->validate([
             'body' => ['required', 'string'],
         ]);
-        //make sure only project owner can add task to it
-        $this->authorize('update', $project);
         $project->addTask($request->body);
 
         return redirect($project->path());
@@ -29,6 +30,7 @@ class TaskController extends Controller
      */
     public function update(Project $project, Task $task, Request $request)
     {
+        $this->authorize('update', $task);
         $this->authorize('update', $project);
         //validate
         $request->validate([

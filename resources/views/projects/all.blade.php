@@ -54,38 +54,40 @@
                             <p class="text-muted">
                                 {{ Str::limit($project->description, 250, '...') }}
                             </p>
-                            <div class="w-100 text-right">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
-                                    <img class="" src="{{ asset('images/delete.svg') }}" alt="delete icon">
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Delete Project</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Are you sure you want to delete this project with all of its data ?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">cancel</button>
-                                                <form method="POST" action="{{ route('project.delete', $project->id) }}">
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                    @csrf
-                                                    @method('delete')
-                                                </form>
+                            @can('destroy', $project)
+                                <div class="w-100 text-right">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
+                                        <img class="" src="{{ asset('images/delete.svg') }}" alt="delete icon">
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Project</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this project with all of its data ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">cancel</button>
+                                                    <form method="POST" action="{{ route('project.delete', $project->id) }}">
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endcan
                         </div>
                     </div>
                 @empty
