@@ -2,7 +2,7 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     @foreach (auth()
         ->user()
-        ->activities->take(6)
+        ->activities()->get()->take(10)
     as $activity)
         @if ($activity->activitable_type === 'App\Models\Project')
             <a href="{{ route('project.show', $activity->activitable_id) }}" class="text-decoration-none">

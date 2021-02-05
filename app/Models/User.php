@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -86,7 +87,24 @@ class User extends Authenticatable
 
     public function activities()
     {
-        return $this->hasMany(\App\Models\Activity::class, 'owner')->orderBy('updated_at', 'desc');
+        // return $this->hasMany(\App\Models\Activity::class, 'owner')->orderBy('updated_at', 'desc');
+        $projectIds = $this->availableProjects()->pluck('id');
+        $projects = $projectIds->map(function ($projectId) {
+            return Project::find($projectId)->tasks->pluck('id');
+        })->toArray();
+        $tasksId = [];
+        foreach ($projects as $project => $value) {
+            if ($value) {
+                foreach ($value as $temp) {
+                    \array_push($tasksId, $temp);
+                }
+            }
+        }
+
+        return Activity::whereHasMorph('activitable', '*', function (Builder $query, $type) use ($projectIds, $tasksId) {
+            $arrayOfValues = Task::class === $type ? $tasksId : $projectIds;
+            $query->whereIn('activitable_id', $arrayOfValues);
+        })->orderBy('created_at', 'desc');
     }
 
     public function invitedProjects()

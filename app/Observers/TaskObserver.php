@@ -38,7 +38,7 @@ class TaskObserver
                 $this->activityCreate($task, false, 'task marked as in completed');
             }
         } else {
-            $this->activityCreate($task, true, 'project updated');
+            $this->activityCreate($task, true, 'task updated');
         }
     }
 

@@ -46,7 +46,7 @@
             <div class="col-md-10 row">
                 @forelse($projects as $project )
                     <div class="col-md-4  mb-2">
-                        <div class="shadow bg-white py-3 bd-callout bd-callout-info pl-2 rounded"
+                        <div class="shadow h-100 bg-white py-3 bd-callout bd-callout-info pl-2 rounded"
                             style="border-left:6px solid #5bc0de">
                             <h4 id="dealing-with-specificity" class=""><a href="{{ $project->path() }}"
                                     class="text-decoration-none text-dark">{{ Str::limit($project->title, 25, '...') }}</a>

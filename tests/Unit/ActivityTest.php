@@ -18,21 +18,16 @@ class ActivityTest extends TestCase
     use RefreshDatabase;
 
     // @test
-    // public function testUserMayHaveOtherMembersActivities()
-    // {
-    //     //having one user, create a project and invite 2 members, when one make changes
-    //     //the others should see this activities
-    //     $this->withoutExceptionHandling();
-    //     $owner = User::factory()->create();
-    //     $this->signUserIn($owner);
-    //     $project = Project::factory()->create();
-    //     $firstMember = User::factory()->create();
-    //     $secondMember = User::factory()->create();
-    //     $project->invite($firstMember);
-    //     $project->invite($secondMember);
-    //     $this->signUserIn($firstMember);
-    //     $project->addTask('test');
-    //     $this->signUserIn($secondMember);
-    //     $this->assertCount(auth()->user()->getActivities->count(), 2);
-    // }
+    public function testUserMayHaveOtherMembersActivities()
+    {
+        $this->withoutExceptionHandling();
+        $owner = User::factory()->create();
+        $this->signUserIn($owner);
+        $project = Project::factory()->create();
+        $firstMember = User::factory()->create();
+        $project->invite($firstMember);
+        $this->signUserIn($firstMember);
+        $project->addTask('test');
+        $this->assertNotEmpty(auth()->user()->activities()->get()->toArray());
+    }
 }
