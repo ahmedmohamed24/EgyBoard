@@ -17,7 +17,7 @@ class TaskPolicy
 
     public function update(User $user, Task $task)
     {
-        return $user->is($task->getProject->user);
+        return $user->is($task->getProject->user) || $task->getProject->members->contains($user);
     }
 
     public function destroy(User $user, Task $task)

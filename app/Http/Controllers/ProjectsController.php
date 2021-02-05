@@ -39,11 +39,11 @@ class ProjectsController extends Controller
     public function updateNotes(Project $project, Request $request)
     {
         $this->authorize('update', $project);
-        $request->validate([
+        $notes = $request->validate([
             'notes' => 'nullable|string',
         ]);
         $project->update([
-            'notes' => $request->notes,
+            'notes' => $notes['notes'],
         ]);
         //may return message of success
         return back();

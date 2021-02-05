@@ -61,5 +61,5 @@
         @endforeach
         </tbody>
     </table>
-    {!! $activities->render() !!}
+    {{-- {!! $activities->render() !!} --}}
 @endsection

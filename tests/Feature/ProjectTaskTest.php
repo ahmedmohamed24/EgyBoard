@@ -92,8 +92,8 @@ class ProjectTaskTest extends TestCase
     {
         // $this->withoutExceptionHandling();
         $this->signUserIn();
-        $user1Project = Project::factory()->create();
-        $task = $user1Project->addTask('test');
+        $firstUserProject = Project::factory()->create();
+        $task = $firstUserProject->addTask('test');
         $this->signUserIn();
         //try to update after signing in with another account
         $newTask = Task::factory()->raw();

@@ -30,7 +30,6 @@ class TaskObserver
      */
     public function updated(Task $task)
     {
-        //this id only for testing with factory but in live user couldn't get here unless he is auth
         if (array_key_exists('status', $task->getChanges())) {
             //no need for recording data here Only status is changed (request is sent per every change)
             if (array_values($task->getChanges())[0]) {
