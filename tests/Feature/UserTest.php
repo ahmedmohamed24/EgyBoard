@@ -27,7 +27,7 @@ class UserTest extends TestCase
         Project::factory()->create();
         $activity=auth()->user()->activities()->first();
         $this->delete("/activity/$activity->id")->assertStatus(302)->assertDontSee("new project created")->assertSessionHas('msg');
-        $this->assertDatabaseMissing('activities',['description'=>$activity->description]);
+        $this->assertDatabaseMissing('activities', ['description'=>$activity->description]);
     }
 
     /**@test*/
